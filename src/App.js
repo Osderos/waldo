@@ -9,8 +9,9 @@ import ex1item3 from "./images/example1-item3.png";
 
 function App() {
   const [chars, setChars] = useState([]);
-
-  console.log(chars);
+  const [positionX, setPositionX] = useState("");
+  const [positionY, setPositionY] = useState("");
+  const [isHidden, setHidden] = useState(true);
 
   useEffect(() => {
     const unsub = onSnapshot(collection(db, "chars"), (snapshot) => {
@@ -19,13 +20,26 @@ function App() {
     return unsub;
   }, []);
 
+  const handlePosition = (e) => {
+    setPositionX(e.clientX + "px");
+    setPositionY(e.clientY + "px");
+    setHidden(!isHidden);
+  };
 
-  const handlePosition = (e) =>{
-    console.log(e.clientX, e.clientY)
-  } 
+  const cursor = document.querySelector("#corsor");
+  const cursorAnim = (e) => {
+    cursor.style.left = e.clientX + "px";
+    cursor.style.top = e.clientY + "px";
+  };
 
   return (
     <StyledContainer>
+      <Cursor id="corsor" />
+      <List pozX={positionX} pozY={positionY} hidden={isHidden}>
+        <span>Tent</span>
+        <span>Passport</span>
+        <span>Slippers</span>
+      </List>
       <ItemsContainer>
         <ImageContainer>
           <StyledMiniImage src={ex1item1} alt="ex1item1" />
@@ -37,7 +51,12 @@ function App() {
           <StyledMiniImage src={ex1item3} alt="ex1item3" />
         </ImageContainer>
       </ItemsContainer>
-      <StyledImage src={Image} alt="ex1" onClick={handlePosition} />
+      <StyledImage
+        src={Image}
+        alt="ex1"
+        onClick={handlePosition}
+        onMouseMove={cursorAnim}
+      />
     </StyledContainer>
   );
 }
@@ -59,15 +78,15 @@ const StyledImage = styled.img`
   box-shadow: 5px 10px 18px #888888;
 `;
 
-const StyledMiniImage=styled(StyledImage)`
-box-shadow: none;
-`
+const StyledMiniImage = styled(StyledImage)`
+  box-shadow: none;
+`;
 
 const ItemsContainer = styled.div`
   display: flex;
   gap: 10px;
   padding: 10px;
-  border:2px solid #ffe8d6;
+  border: 2px solid #ffe8d6;
 `;
 
 const ImageContainer = styled.div`
@@ -76,7 +95,37 @@ const ImageContainer = styled.div`
 `;
 
 const Cursor = styled.div`
-position: fixed;
-border-radius: 50%;
-transform: translateX(-50%) translateY(-50%)
-`
+  position: fixed;
+  width: 64px;
+  height: 64px;
+  margin: -32px 0 0 -32px;
+  border: 3px dashed red;
+  border-radius: 50%;
+  pointer-events: none;
+`;
+
+const List = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+
+  background-color: rgba(76, 76, 76, 0.31);
+  padding: 8px;
+  align-items: center;
+  position: absolute;
+  visibility: ${(props) => (props.hidden ? "hidden" : "visible")};
+  top: ${(props) => props.pozY};
+  left: ${(props) => props.pozX};
+
+  span {
+    @import url("https://fonts.googleapis.com/css2?family=Lato&display=swap");
+    font-family: "Lato", sans-serif;
+    border-bottom: 1px solid gray;
+    color: white;
+    font-weight: bolder;
+  }
+
+  &:hover {
+    cursor: pointer;
+  }
+`;
