@@ -6,16 +6,17 @@ import Image from "./images/example1.png";
 import ex1item1 from "./images/example1-item1.png";
 import ex1item2 from "./images/example1-item2.png";
 import ex1item3 from "./images/example1-item3.png";
+import ListItem from "./components/ListItem";
 
 function App() {
-  const [chars, setChars] = useState([]);
+  const [items, setItems] = useState([]);
   const [positionX, setPositionX] = useState("");
   const [positionY, setPositionY] = useState("");
   const [isHidden, setHidden] = useState(true);
 
   useEffect(() => {
-    const unsub = onSnapshot(collection(db, "chars"), (snapshot) => {
-      setChars(snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+    const unsub = onSnapshot(collection(db, "positions"), (snapshot) => {
+      setItems(snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
     });
     return unsub;
   }, []);
@@ -32,24 +33,25 @@ function App() {
     cursor.style.top = e.clientY + "px";
   };
 
+  const gameRound = (e) => {
+    const value = e.target.innerText;
+    console.log(value);
+  };
+  
+  const itemsList = items.map((item) => (
+    <ListItem key={item.id} name={item.name} gameRound={gameRound} />
+  ));
+
   return (
     <StyledContainer>
       <Cursor id="corsor" />
-      <List pozX={positionX} pozY={positionY} hidden={isHidden}>
-        <span>Tent</span>
-        <span>Passport</span>
-        <span>Slippers</span>
-      </List>
+      <ListContainer pozX={positionX} pozY={positionY} hidden={isHidden}>
+        {itemsList}
+      </ListContainer>
       <ItemsContainer>
-        <ImageContainer>
-          <StyledMiniImage src={ex1item1} alt="ex1item1" />
-        </ImageContainer>
-        <ImageContainer>
-          <StyledMiniImage src={ex1item2} alt="ex1item2" />
-        </ImageContainer>
-        <ImageContainer>
-          <StyledMiniImage src={ex1item3} alt="ex1item3" />
-        </ImageContainer>
+        <StyledImage src={ex1item1} alt="ex1item1" />
+        <StyledImage src={ex1item2} alt="ex1item2" />
+        <StyledImage src={ex1item3} alt="ex1item3" />
       </ItemsContainer>
       <StyledImage
         src={Image}
@@ -78,20 +80,17 @@ const StyledImage = styled.img`
   box-shadow: 5px 10px 18px #888888;
 `;
 
-const StyledMiniImage = styled(StyledImage)`
-  box-shadow: none;
-`;
-
 const ItemsContainer = styled.div`
   display: flex;
   gap: 10px;
   padding: 10px;
   border: 2px solid #ffe8d6;
-`;
 
-const ImageContainer = styled.div`
-  width: 30px;
-  height: 30px;
+  img {
+    box-shadow: none;
+    width: 30px;
+    height: 30px;
+  }
 `;
 
 const Cursor = styled.div`
@@ -104,15 +103,14 @@ const Cursor = styled.div`
   pointer-events: none;
 `;
 
-const List = styled.div`
+const ListContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 5px;
-
+  position: fixed;
   background-color: rgba(76, 76, 76, 0.31);
   padding: 8px;
   align-items: center;
-  position: absolute;
   visibility: ${(props) => (props.hidden ? "hidden" : "visible")};
   top: ${(props) => props.pozY};
   left: ${(props) => props.pozX};
