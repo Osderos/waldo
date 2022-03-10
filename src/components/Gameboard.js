@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import db from "../firebase";
-import { collection, doc , getDoc} from 'firebase/firestore'
+import { collection, doc, getDoc } from "firebase/firestore";
 import styled from "styled-components";
 import Image from "../images/example1.png";
 import ex1item1 from "../images/example1-item1.png";
@@ -15,6 +15,7 @@ function Gameboard(props) {
   const [x, setX] = useState("");
   const [y, setY] = useState("");
   const [isHidden, setHidden] = useState(true);
+  const [selectedItem, setSelectedItem] = useState("");
 
   const toggleList = (e) => {
     setX(e.pageX);
@@ -25,9 +26,7 @@ function Gameboard(props) {
   useEffect(() => {
     console.log("Coord X", positionX);
     console.log("Coord Y", positionY);
-    console.log("List X", x);
-    console.log("List Y", y);
-  },[]);
+  });
 
   const printCoordinates = (e) => {
     const { width, height } = e.target.getBoundingClientRect();
@@ -43,13 +42,16 @@ function Gameboard(props) {
     cursor.style.top = e.clientY + "px";
   };
 
-  const gameRound = async () => {
-    const positionRef = doc(db, 'positions', "AddPBwqTJDwxyIBsVW2p");
-    const document = await getDoc(positionRef)
-    console.log(document.data().name);
+
+  const gameRound = async (e) => {
+    const positionRef = doc(db, "positions", `${e.target.dataset.tag}`);
+    const document = await getDoc(positionRef);
+    const pozX = document.data().positionX;
+    const pozY = document.data().positionY;
+    console.log(checkPointInCircle(pozX, pozY, positionX, positionY, 2.5));
   };
 
-  gameRound();
+ 
 
   return (
     <StyledContainer>
@@ -58,7 +60,13 @@ function Gameboard(props) {
         <StyledImage src={ex1item2} alt="ex1item2" />
         <StyledImage src={ex1item3} alt="ex1item3" />
       </ItemsContainer>
-      <List items={props.items} x={x} y={y} isHidden={isHidden} />
+      <List
+        items={props.items}
+        x={x}
+        y={y}
+        isHidden={isHidden}
+        gameRound={gameRound}
+      />
       <div
         onClick={(e) => {
           printCoordinates(e);

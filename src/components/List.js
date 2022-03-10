@@ -6,7 +6,7 @@ export default function List(props) {
 
 
 const itemsList = props.items.map((item) => (
-    <ListItem key={item.id} name={item.name} />
+    <ListItem key={item.id} name={item.name} gameRound={props.gameRound} id={item.id} />
   ));
 
   return (

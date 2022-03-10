@@ -4,7 +4,7 @@ function ListItem(props) {
 
   
   return (
-    <span>{props.name}</span>
+    <span onClick={(e)=>props.gameRound(e)} data-tag={props.id}>{props.name}</span>
   )
 }
 
