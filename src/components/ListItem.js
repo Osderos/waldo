@@ -1,8 +1,10 @@
 import React from 'react'
 
 function ListItem(props) {
+
+  
   return (
-    <span onClick={(e)=> props.gameRound(e)}>{props.name}</span>
+    <span>{props.name}</span>
   )
 }
 
