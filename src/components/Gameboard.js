@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from "react";
+import db from "../firebase";
+import { collection, doc , getDoc} from 'firebase/firestore'
 import styled from "styled-components";
 import Image from "../images/example1.png";
 import ex1item1 from "../images/example1-item1.png";
 import ex1item2 from "../images/example1-item2.png";
 import ex1item3 from "../images/example1-item3.png";
 import List from "./List";
+import { checkPointInCircle } from "../utils/checkPointInCircle";
 
 function Gameboard(props) {
   const [positionX, setPositionX] = useState("");
@@ -22,9 +25,9 @@ function Gameboard(props) {
   useEffect(() => {
     console.log("Coord X", positionX);
     console.log("Coord Y", positionY);
-    console.log('List X', x);
-    console.log('List Y', y);
-  });
+    console.log("List X", x);
+    console.log("List Y", y);
+  },[]);
 
   const printCoordinates = (e) => {
     const { width, height } = e.target.getBoundingClientRect();
@@ -40,9 +43,13 @@ function Gameboard(props) {
     cursor.style.top = e.clientY + "px";
   };
 
-  const checkPointInCircle = (e) => {
-    console.log(e.pageX, e.pageY);
+  const gameRound = async () => {
+    const positionRef = doc(db, 'positions', "AddPBwqTJDwxyIBsVW2p");
+    const document = await getDoc(positionRef)
+    console.log(document.data().name);
   };
+
+  gameRound();
 
   return (
     <StyledContainer>
@@ -51,6 +58,7 @@ function Gameboard(props) {
         <StyledImage src={ex1item2} alt="ex1item2" />
         <StyledImage src={ex1item3} alt="ex1item3" />
       </ItemsContainer>
+      <List items={props.items} x={x} y={y} isHidden={isHidden} />
       <div
         onClick={(e) => {
           printCoordinates(e);
@@ -58,7 +66,6 @@ function Gameboard(props) {
         }}
         onMouseMove={cursorAnim}
       >
-        <List items={props.items} x={x} y={y} isHidden={isHidden}/>
         <Cursor id="corsor" />
         <StyledImage src={Image} alt="ex1" />
       </div>
@@ -97,9 +104,9 @@ const ItemsContainer = styled.div`
 
 const Cursor = styled.div`
   position: fixed;
-  width: 32px;
-  height: 32px;
-  margin: -16px 0 0 -16px;
+  width: 58px;
+  height: 58px;
+  margin: -29px 0 0 -29px;
   border: 3px dashed red;
   border-radius: 50%;
   pointer-events: none;
