@@ -48,8 +48,13 @@ function Gameboard(props) {
     const document = await getDoc(positionRef);
     const pozX = document.data().positionX;
     const pozY = document.data().positionY;
-    console.log(checkPointInCircle(pozX, pozY, positionX, positionY, 2.5));
+    const name = document.data().name
+    
+    const resultat = checkPointInCircle(pozX, pozY, positionX, positionY, 2.5)
+
+    props.removeItemFromList(resultat, name)
   };
+
 
  
 

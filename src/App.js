@@ -13,8 +13,15 @@ function App() {
     return unsub;
   }, []);
 
+  const removeItemFromList = (isTrue, itemName) => {
+    if (isTrue) {
+      const removedItems = items.filter((item) => item.name !== itemName);
+      setItems(removedItems);
+    }
+    return null;
+  };
 
-  return <Gameboard items={items} />;
+  return <Gameboard items={items} removeItemFromList={removeItemFromList}/>;
 }
 
 export default App;
