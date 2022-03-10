@@ -1,11 +1,26 @@
-import React from 'react'
+import React from "react";
+import styled from "styled-components";
 
 function ListItem(props) {
-
-  
   return (
-    <span onClick={(e)=>props.gameRound(e)} data-tag={props.id}>{props.name}</span>
-  )
+    <StyledItem
+      onClick={(e) => {
+        props.gameRound(e);
+        props.messageTimer();
+      }}
+      data-tag={props.id}
+    >
+      {props.name}
+    </StyledItem>
+  );
 }
 
-export default ListItem
+export default ListItem;
+
+const StyledItem = styled.span`
+  transition: all 0.5 ease;
+
+  &:hover {
+    color: red;
+  }
+`;

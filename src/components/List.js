@@ -1,19 +1,23 @@
-import React,{useState} from 'react'
+import React, { useState } from "react";
 import ListItem from "./ListItem";
-import styled from 'styled-components'
+import styled from "styled-components";
 
 export default function List(props) {
-
-
-const itemsList = props.items.map((item) => (
-    <ListItem key={item.id} name={item.name} gameRound={props.gameRound} id={item.id} />
+  const itemsList = props.items.map((item) => (
+    <ListItem
+      key={item.id}
+      name={item.name}
+      gameRound={props.gameRound}
+      id={item.id}
+      messageTimer={props.messageTimer}
+    />
   ));
 
   return (
     <ListContainer pozX={props.x} pozY={props.y} hidden={props.isHidden}>
-    {itemsList}
-  </ListContainer>
-  )
+      {itemsList}
+    </ListContainer>
+  );
 }
 
 const ListContainer = styled.div`
@@ -39,4 +43,4 @@ const ListContainer = styled.div`
   &:hover {
     cursor: pointer;
   }
-  `
+`;

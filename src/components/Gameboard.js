@@ -8,6 +8,7 @@ import ex1item2 from "../images/example1-item2.png";
 import ex1item3 from "../images/example1-item3.png";
 import List from "./List";
 import { checkPointInCircle } from "../utils/checkPointInCircle";
+import { CorrectTemplate, WrongTemplate } from "../utils/messageTemplates";
 
 function Gameboard(props) {
   const [positionX, setPositionX] = useState("");
@@ -16,6 +17,7 @@ function Gameboard(props) {
   const [y, setY] = useState("");
   const [isHidden, setHidden] = useState(true);
   const [selectedItem, setSelectedItem] = useState("");
+  const [isCorrect, setIsCorrect] = useState("");
 
   const toggleList = (e) => {
     setX(e.pageX);
@@ -23,15 +25,9 @@ function Gameboard(props) {
     setHidden(!isHidden);
   };
 
-  useEffect(() => {
-    console.log("Coord X", positionX);
-    console.log("Coord Y", positionY);
-  });
-
   const printCoordinates = (e) => {
     const { width, height } = e.target.getBoundingClientRect();
     const { offsetX, offsetY } = e.nativeEvent;
-
     setPositionX(Math.round((offsetX / width) * 100));
     setPositionY(Math.round((offsetY / height) * 100));
   };
@@ -42,21 +38,42 @@ function Gameboard(props) {
     cursor.style.top = e.clientY + "px";
   };
 
-
   const gameRound = async (e) => {
     const positionRef = doc(db, "positions", `${e.target.dataset.tag}`);
     const document = await getDoc(positionRef);
     const pozX = document.data().positionX;
     const pozY = document.data().positionY;
-    const name = document.data().name
-    
-    const resultat = checkPointInCircle(pozX, pozY, positionX, positionY, 2.5)
-
-    props.removeItemFromList(resultat, name)
+    const name = document.data().name;
+    const resultat = checkPointInCircle(pozX, pozY, positionX, positionY, 2.5);
+    props.removeItemFromList(resultat, name);
+    setIsCorrect(resultat);
   };
 
+  const messageTimer = () => {
+    setTimeout(toNull, 3000);
+  };
 
- 
+  const toNull = () => {
+    setIsCorrect(null);
+  };
+
+  const messageBox = () => {
+    if (isCorrect === true) {
+      return (
+        <CorrectTemplate pozX={props.x} pozY={props.y}>
+          Congratualations, you have found the item!
+        </CorrectTemplate>
+      );
+    } else if (isCorrect === false) {
+      return (
+        <WrongTemplate pozX={x} pozY={y}>
+          Sorry, that's not it!
+        </WrongTemplate>
+      );
+    } else {
+      return null;
+    }
+  };
 
   return (
     <StyledContainer>
@@ -65,12 +82,14 @@ function Gameboard(props) {
         <StyledImage src={ex1item2} alt="ex1item2" />
         <StyledImage src={ex1item3} alt="ex1item3" />
       </ItemsContainer>
+      {messageBox()}
       <List
         items={props.items}
         x={x}
         y={y}
         isHidden={isHidden}
         gameRound={gameRound}
+        messageTimer={messageTimer}
       />
       <div
         onClick={(e) => {

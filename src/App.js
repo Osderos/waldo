@@ -21,7 +21,9 @@ function App() {
     return null;
   };
 
-  return <Gameboard items={items} removeItemFromList={removeItemFromList}/>;
+
+
+  return <Gameboard items={items} removeItemFromList={removeItemFromList} />;
 }
 
 export default App;
