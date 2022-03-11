@@ -10,6 +10,8 @@ import {
   ItemsContainer,
   StyledImage,
 } from "../components/Containers/Containers";
+import Timer from "./Timer";
+import { useNavigate } from "react-router-dom";
 
 function Gameboard(props) {
   const [positionX, setPositionX] = useState("");
@@ -18,6 +20,8 @@ function Gameboard(props) {
   const [y, setY] = useState("");
   const [isHidden, setHidden] = useState(true);
   const [isCorrect, setIsCorrect] = useState("");
+
+  const navigate = useNavigate();
 
   const toggleList = (e) => {
     setX(e.pageX);
@@ -48,6 +52,8 @@ function Gameboard(props) {
     props.removeItemFromList(resultat, name);
     setIsCorrect(resultat);
   };
+
+  const toHome = () => navigate("/");
 
   const messageTimer = () => {
     setTimeout(toNull, 3000);
@@ -81,7 +87,11 @@ function Gameboard(props) {
 
   return (
     <StyledContainer>
-      <ItemsContainer>{imagesList}</ItemsContainer>
+      <ItemsContainer>
+        {imagesList}
+        <Timer />
+        <StyledButton onClick={toHome}>Back</StyledButton>
+      </ItemsContainer>
       {messageBox()}
       <List
         items={props.items}
@@ -115,4 +125,18 @@ const Cursor = styled.div`
   border: 3px dashed red;
   border-radius: 50%;
   pointer-events: none;
+`;
+
+const StyledButton = styled.button`
+  padding: 10px;
+  border-radius: 10px;
+  margin: 0px;
+  color: white;
+  background-color: gray;
+  font-size: 12px;
+  font-family: monospace;
+
+  &:hover {
+    cursor: pointer;
+  }
 `;

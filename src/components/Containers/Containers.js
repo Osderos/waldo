@@ -21,7 +21,8 @@ flex-direction: row;
 
 const ItemsContainer = styled.div`
   display: flex;
-  justify-content: flex-start;
+  justify-content: space-around;
+  align-items: center;
   gap: 10px;
   padding: 10px;
   border: 1px solid gray;
