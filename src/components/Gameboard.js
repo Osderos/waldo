@@ -1,11 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import db from "../firebase";
 import { collection, doc, getDoc } from "firebase/firestore";
 import styled from "styled-components";
-import Image from "../images/example1.png";
-import ex1item1 from "../images/example1-item1.png";
-import ex1item2 from "../images/example1-item2.png";
-import ex1item3 from "../images/example1-item3.png";
 import List from "./List";
 import { checkPointInCircle } from "../utils/checkPointInCircle";
 import { CorrectTemplate, WrongTemplate } from "../utils/messageTemplates";
@@ -16,7 +12,6 @@ function Gameboard(props) {
   const [x, setX] = useState("");
   const [y, setY] = useState("");
   const [isHidden, setHidden] = useState(true);
-  const [selectedItem, setSelectedItem] = useState("");
   const [isCorrect, setIsCorrect] = useState("");
 
   const toggleList = (e) => {
@@ -75,13 +70,13 @@ function Gameboard(props) {
     }
   };
 
+  const imagesList = props.images.map((imge) => (
+    <StyledImage src={imge.url} key={imge.id} />
+  ));
+
   return (
     <StyledContainer>
-      <ItemsContainer>
-        <StyledImage src={ex1item1} alt="ex1item1" />
-        <StyledImage src={ex1item2} alt="ex1item2" />
-        <StyledImage src={ex1item3} alt="ex1item3" />
-      </ItemsContainer>
+      <ItemsContainer>{imagesList}</ItemsContainer>
       {messageBox()}
       <List
         items={props.items}
@@ -99,7 +94,7 @@ function Gameboard(props) {
         onMouseMove={cursorAnim}
       >
         <Cursor id="corsor" />
-        <StyledImage src={Image} alt="ex1" />
+        <StyledImage src={props.mainImage} alt="ex1" />
       </div>
     </StyledContainer>
   );
@@ -111,7 +106,7 @@ const StyledContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
+
   margin: 25px;
 `;
 
@@ -123,9 +118,12 @@ const StyledImage = styled.img`
 
 const ItemsContainer = styled.div`
   display: flex;
+  justify-content: flex-start;
   gap: 10px;
   padding: 10px;
-  border: 2px solid #ffe8d6;
+  border: 1px solid gray;
+  margin-bottom: 10px;
+  box-shadow: 5px 10px 18px #888888;
 
   img {
     box-shadow: none;

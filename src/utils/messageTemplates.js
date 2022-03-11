@@ -9,8 +9,8 @@ padding: 10px ;
 border-radius: 15px ;
 position: absolute;
 width: 25% ;
-top:${props=> props.pozY - 100 +'px'};
-left:${props=> props.pozX - 150 +'px'};
+top:${props=> props.pozY -100 +'px'};
+left:${props=> props.pozX -50 +'px'};
 font-weight: bold ;
 text-align: center;
 `
