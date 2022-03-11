@@ -4,10 +4,9 @@ import db from "./firebase";
 import Gameboard from "./components/Gameboard";
 import { getImages, getMainImage } from "./utils/getImages";
 
-function App() {
+function App(props) {
   const [items, setItems] = useState([]);
   const [images, setImages] = useState([]);
-  const [mainImage, setMainImage] = useState("");
 
   useEffect(() => {
     const unsub = onSnapshot(collection(db, "positions"), (snapshot) => {
@@ -21,12 +20,7 @@ function App() {
       setImages(await getImages(3, 1));
     };
 
-    const loadMainImage = async () => {
-      setMainImage(await getMainImage(1));
-    };
-
     loadImages();
-    loadMainImage();
   }, []);
 
   const removeItemFromList = (isTrue, itemName) => {
@@ -41,7 +35,7 @@ function App() {
     <Gameboard
       items={items}
       images={images}
-      mainImage={mainImage}
+      mainImage={props.mainImage}
       removeItemFromList={removeItemFromList}
     />
   );

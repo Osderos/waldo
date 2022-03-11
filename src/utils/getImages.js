@@ -30,3 +30,14 @@ export const getMainImage = async (level) => {
     console.log(err);
   }
 };
+
+export const getLogo = async () => {
+  try {
+    const storage = getStorage();
+    const referance = ref(storage, "/logo_size_invert.jpg");
+    const logo = await getDownloadURL(referance);
+    return logo;
+  } catch (err) {
+    console.log(err);
+  }
+};

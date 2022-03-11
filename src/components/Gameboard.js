@@ -5,6 +5,11 @@ import styled from "styled-components";
 import List from "./List";
 import { checkPointInCircle } from "../utils/checkPointInCircle";
 import { CorrectTemplate, WrongTemplate } from "../utils/messageTemplates";
+import {
+  StyledContainer,
+  ItemsContainer,
+  StyledImage,
+} from "../components/Containers/Containers";
 
 function Gameboard(props) {
   const [positionX, setPositionX] = useState("");
@@ -101,36 +106,6 @@ function Gameboard(props) {
 }
 
 export default Gameboard;
-
-const StyledContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-
-  margin: 25px;
-`;
-
-const StyledImage = styled.img`
-  height: 100%;
-  width: 100%;
-  box-shadow: 5px 10px 18px #888888;
-`;
-
-const ItemsContainer = styled.div`
-  display: flex;
-  justify-content: flex-start;
-  gap: 10px;
-  padding: 10px;
-  border: 1px solid gray;
-  margin-bottom: 10px;
-  box-shadow: 5px 10px 18px #888888;
-
-  img {
-    box-shadow: none;
-    width: 30px;
-    height: 30px;
-  }
-`;
 
 const Cursor = styled.div`
   position: fixed;
