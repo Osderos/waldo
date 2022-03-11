@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import React,{useEffect,useState} from "react";
-import App from "./App";
+import App from "./components/App";
 import Scoreboard from "./components/Scoreboard";
 import Home from './components/Home'
 import { getMainImage } from "./utils/getImages";

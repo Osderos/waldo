@@ -50,6 +50,7 @@ function Gameboard(props) {
     const name = document.data().name;
     const resultat = checkPointInCircle(pozX, pozY, positionX, positionY, 2.5);
     props.removeItemFromList(resultat, name);
+    props.isGameOver()
     setIsCorrect(resultat);
   };
 

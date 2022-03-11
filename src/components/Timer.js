@@ -1,13 +1,14 @@
-import React, { useState, useEffect } from "react";
-import styled from 'styled-components'
+import React, { useState, useEffect, useContext } from "react";
+import styled from "styled-components";
+import { UserContext } from "../utils/UserContext";
 
 function Timer() {
   const [time, setTime] = useState(0);
-  const [timerOn, setTimerOn] = useState(false);
+  const [timerOn, setTimerOn] = useState(true);
+  const { gameOver, setPoints } = useContext(UserContext);
 
   useEffect(() => {
     let interval = null;
-    setTimerOn(true);
 
     if (timerOn) {
       interval = setInterval(() => {
@@ -17,6 +18,13 @@ function Timer() {
 
     return () => clearInterval(interval);
   }, [timerOn]);
+
+  useEffect(() => {
+    if (gameOver) {
+      setTimerOn(false);
+      setPoints(time)
+    }
+  }, [gameOver]);
 
   return (
     <StyledTimer>
@@ -29,10 +37,10 @@ function Timer() {
 
 export default Timer;
 
-const StyledTimer=styled.div`
-background-color: #023047;
-padding: 10px;
-border-radius: 10px;
-color:white;
-font-weight: 700;
-`
+const StyledTimer = styled.div`
+  background-color: #023047;
+  padding: 10px;
+  border-radius: 10px;
+  color: white;
+  font-weight: 700;
+`;
