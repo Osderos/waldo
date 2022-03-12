@@ -2,7 +2,7 @@ import { onSnapshot, collection } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import db from "../firebase";
 import Gameboard from "./Gameboard";
-import { getImages, getMainImage } from "../utils/getImages";
+import { getImages } from "../utils/getImages";
 import { UserContext } from "../utils/UserContext";
 import Form from "./Form";
 
@@ -36,9 +36,12 @@ function App(props) {
   };
 
   const isGameOver = () => {
+
     if (items.length === 1) {
-      setGameOver(true);
+      setGameOver(!gameOver);
     }
+
+   
   };
 
   const providerValue = {

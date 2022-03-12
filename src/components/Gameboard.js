@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import db from "../firebase";
-import { collection, doc, getDoc } from "firebase/firestore";
+import { doc, getDoc } from "firebase/firestore";
 import styled from "styled-components";
 import List from "./List";
 import { checkPointInCircle } from "../utils/checkPointInCircle";
@@ -67,7 +67,7 @@ function Gameboard(props) {
   const messageBox = () => {
     if (isCorrect === true) {
       return (
-        <CorrectTemplate pozX={props.x} pozY={props.y}>
+        <CorrectTemplate pozX={x} pozY={y}>
           Congratualations, you have found the item!
         </CorrectTemplate>
       );

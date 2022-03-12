@@ -1,12 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FormContainer } from "../components/Containers/Containers";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
+import db from "../firebase";
+import {addDoc, collection} from 'firebase/firestore'
+
 
 function Form(props) {
   const [playerDetails, setPlayerDetails] = useState({
     name: "",
-    score: Math.max(0, 500 - (props.points/1000))*50
+    score: 500 - props.points / 100,
   });
 
   const navigate = useNavigate();
@@ -17,9 +20,15 @@ function Form(props) {
     setPlayerDetails({ ...playerDetails, name: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const scoresRef = collection(db, 'scores')
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    toHome();
+    await addDoc(scoresRef, {
+      name: playerDetails.name,
+      score: playerDetails.score,
+    }).then(()=>{toHome()})
+    
   };
 
   return (
@@ -49,7 +58,7 @@ function Form(props) {
         </div>
         <div>
           <SubmitButton type="submit">Add Score</SubmitButton>
-          <ReturnButton>Return Home</ReturnButton>
+          <ReturnButton onClick={toHome}>Return Home</ReturnButton>
         </div>
       </FormContainer>
     </form>
