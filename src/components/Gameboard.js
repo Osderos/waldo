@@ -10,6 +10,7 @@ import {
   ItemsContainer,
   StyledImage,
 } from "../components/Containers/Containers";
+import { StyledButton } from "./Buttons/Buttons";
 import Timer from "./Timer";
 import { useNavigate } from "react-router-dom";
 
@@ -128,16 +129,4 @@ const Cursor = styled.div`
   pointer-events: none;
 `;
 
-const StyledButton = styled.button`
-  padding: 10px;
-  border-radius: 10px;
-  margin: 0px;
-  color: white;
-  background-color: gray;
-  font-size: 12px;
-  font-family: monospace;
 
-  &:hover {
-    cursor: pointer;
-  }
-`;
